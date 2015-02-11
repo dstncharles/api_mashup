@@ -7,8 +7,8 @@ var MyRouter = Backbone.Router.extend({
         "results/:id": "results"
       },
       index: function() {
-        var template = _.template($('#job-and-homes-template').text());
-        var renderedTemplate = template("job-and-homes-template");
+        var template = _.template($('#index-template').text());
+        var renderedTemplate = template("index-template");
         $('.app-container').html(renderedTemplate);
       },
 
@@ -24,3 +24,15 @@ var MyRouter = Backbone.Router.extend({
       var router = new MyRouter();
       Backbone.history.start();
     });
+
+
+
+////////////////////////////////
+///View
+////////////////////////////////
+
+
+
+////////////////////////////////
+///Model
+////////////////////////////////
