@@ -13,8 +13,6 @@ var MyRouter = Backbone.Router.extend({
       },
 
       results: function(id) {
-        var resultsIndex = Number(id);
-        var results = deck[resultsIndex];
         var template = _.template($('#results-template').text());
         var renderedTemplate = template("results-template");
         $('.app-container').html(renderedTemplate);
