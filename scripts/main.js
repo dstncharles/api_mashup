@@ -31,18 +31,19 @@ var ZipInputView = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template());
     return this;
-  })
+  }
+});
 
 var ZipsListView = Backbone.View.extend({
   tagName: 'ul',
 
-  render: function(){
-      var self = this;
-      this.collection.each(function(zips){
-        self.$el.append('<li>' + zips.get('body') + '</li>');
-      });
-    }
-  });
+  render: function() {
+    var self = this;
+    this.collection.each(function(zips) {
+      self.$el.append('<li>' + zips.get('body') + '</li>');
+    });
+  }
+});
 
 
 ////////////////////////////////
@@ -55,9 +56,15 @@ var MyRouter = Backbone.Router.extend({
   },
 
   initialize: function() {
-    this.zips = new ZipCollection([{body: 'First Data'}]);
-    this.inputView = new ZipInputView({collection: this.zips});
-    this.listView = new ZipsListView({collection: this.zips});
+    this.zips = new ZipCollection([{
+      body: 'First Data'
+    }]);
+    this.inputView = new ZipInputView({
+      collection: this.zips
+    });
+    this.listView = new ZipsListView({
+      collection: this.zips
+    });
   },
 
 
