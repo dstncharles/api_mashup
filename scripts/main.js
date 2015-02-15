@@ -1,4 +1,115 @@
-// ////////////////////////////////
+////////////////////////////////
+///Model
+////////////////////////////////
+window.App = window.App || {};
+
+ var AppModel = Backbone.Model.extend({
+  // console.log('dog')
+   defaults: {
+     searchTerm: ''
+   }
+ });
+
+ // var Concert = Backbone.Model.extend({});
+
+ var ConcertCollection = Backbone.Collection.extend({
+// console.log('pig')
+   initialize: function(collection, options){
+     this.appModel = options.appModel;
+   },
+
+   url: function (){
+    console.log('6')
+     var searchTerm = this.appModel.get('events');
+     var base = "http://api.bandsintown.com/artists/Skrillex/events.json?app_id=";
+     var appId = "something_music";
+      return base + appId + (searchTerm ? "&events=" + searchTerm : "");
+   },
+
+   // model: Concert,
+
+   sync: function(method, collection, options) {
+    console.log('5')
+     options.dataType = 'jsonp';
+     Backbone.sync(method, collection, options);
+   },
+
+ });
+
+
+////////////////////////////////
+///View
+////////////////////////////////
+ var ListView = Backbone.View.extend({
+  // console.log('pow')
+
+   el: '#events',
+
+   initialize: function(){
+     this.listenTo(this.collection, 'sync', this.render);
+   },
+
+   render: function(){
+    console.log('3')
+     this.$el.empty();
+     var self = this;
+     this.collection.each(function(event){
+       self.$el.append('<li>' + event.get('') + '</li>');
+     });
+   },
+ });
+
+
+////////////////////////////////
+///Router
+////////////////////////////////
+ var AppRouter = Backbone.Router.extend({
+  // console.log('ban')
+   routes: {
+     '': 'index',
+     'search/:term': 'search'
+   },
+
+   initialize: function(){
+    console.log('2')
+     this.appModel = new AppModel();
+     this.events = new ConcertCollection([], {appModel: this.appModel});
+     this.listView = new ListView({collection: this.events});
+     this.listView.render();
+   },
+
+   index: function(){
+    console.log('4')
+     this.events.fetch();
+   },
+
+   search: function(){
+    console.log('sad')
+     this.appModel.set('searchTerm');
+     this.events.fetch();
+   }
+ });
+
+ $(document).ready(function(){
+  console.log('1')
+   window.router = new AppRouter();
+   Backbone.history.start();
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // ////////////////////////////////
 // ///Model
 // ////////////////////////////////
 // var Concert = Backbone.Model.extend({
@@ -88,104 +199,3 @@
 //   Backbone.history.start();
 // });
 // /////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-////////////////////////////////
-///Model
-////////////////////////////////
-window.App = window.App || {};
-
- var AppModel = Backbone.Model.extend({
-   defaults: {
-     searchTerm: ''
-   }
- });
-
- var Concert = Backbone.Model.extend({});
-
- var ConcertCollection = Backbone.Collection.extend({
-   initialize: function(collection, options){
-     this.appModel = options.appModel;
-   },
-
-   url: function (){
-     var searchTerm = this.appModel.get('events');
-     var base = "http://api.bandsintown.com/artists/Skrillex/events.json?app_id=";
-     var appId = "something_music";
-      return base + appId + (searchTerm ? "venue" + searchTerm : "");
-
-     // return base + appId;
-
-   },
-
-   model: Concert,
-
-   sync: function(method, collection, options) {
-     options.dataType = 'jsonp';
-     Backbone.sync(method, collection, options);
-   },
-
-   parse: function(response) {
-     return response.results;
-   }
- });
-
-
-////////////////////////////////
-///View
-////////////////////////////////
- var ListView = Backbone.View.extend({
-
-   el: '#events',
-
-   initialize: function(){
-     this.listenTo(this.collection, 'sync', this.render);
-   },
-
-   render: function(){
-     this.$el.empty();
-     var self = this;
-     this.collection.each(function(event){
-       self.$el.append('<li>' + event.get('venue') + '</li>');
-     });
-   },
- });
-
-
-////////////////////////////////
-///Router
-////////////////////////////////
- var AppRouter = Backbone.Router.extend({
-   routes: {
-     '': 'index',
-     'search/:term': 'search'
-   },
-
-   initialize: function(){
-     this.appModel = new AppModel();
-     this.events = new ConcertCollection([], {appModel: this.appModel});
-     this.listView = new ListView({collection: this.events});
-     this.listView.render();
-   },
-
-   index: function(){
-     this.events.fetch();
-   },
-
-   search: function(term){
-     this.appModel.set('searchTerm', term);
-     this.events.fetch();
-   }
- });
-
- $(document).ready(function(){
-   window.router = new AppRouter();
-   Backbone.history.start();
- });
