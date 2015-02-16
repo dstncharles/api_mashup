@@ -1,5 +1,6 @@
 ////////////////////////////////
-///Model
+///Model or collections 
+//colection of data and or behavior 
 ////////////////////////////////
 window.App = window.App || {};
 
@@ -31,6 +32,9 @@ window.App = window.App || {};
 
 ////////////////////////////////
 ///View
+//JS objact
+//responisble for meadiating and
+//a model or collection 
 ////////////////////////////////
  var ListView = Backbone.View.extend({
 
@@ -52,6 +56,8 @@ window.App = window.App || {};
 
 ////////////////////////////////
 ///Router
+//manages aplication state 
+//routs and urls
 ////////////////////////////////
  var AppRouter = Backbone.Router.extend({
    routes: {
